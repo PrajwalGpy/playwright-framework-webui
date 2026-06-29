@@ -5,7 +5,7 @@ import { users } from "../test-data/users";
 let loginPage;
 test.beforeEach(async({page})=>{
      loginPage = new LoginPage(page);
-     loginPage.navigate();
+     await loginPage.navigate();
 })
 
 test("Valid Login", async ({ page }) => {

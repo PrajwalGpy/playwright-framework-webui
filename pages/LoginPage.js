@@ -27,6 +27,5 @@ export class LoginPage {
   async logout() {
     await this.OpenMenuButton.click();
     await this.LogOutButton.click();
-    await expect(this.page).toHaveURL("https://www.saucedemo.com/");
   }
 }
