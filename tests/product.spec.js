@@ -24,4 +24,5 @@ test("Verify Products Load", async ({ page }) => {
 
 test('Sort A-Z',async({page})=>{
     productPage.product_sorter("Name (A to Z)");
+    ////
 })
