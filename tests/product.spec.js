@@ -46,3 +46,23 @@ test("Verify Products Sort: Z to A",async({page})=>{
     await expect(actualNames).toEqual(expectedNames)
 });
 
+
+test("Verify Products Sort: Price Low to High",async({page})=>{
+    await productPage.product_sorter("Price (low to high)");
+
+    const actualPrices = await productPage.getItemPrices();
+
+    const expectedPrices =  [...actualPrices].sort((a,b)=>a-b);
+
+    await expect(actualPrices).toEqual(expectedPrices);
+});
+
+test("Verify Products Sort: Price High to Low", async ({ page }) => {
+  await productPage.product_sorter("Price (high to low)");
+
+  const actualPrices = await productPage.getItemPrices();
+
+  const expectedPrices = [...actualPrices].sort((a, b) => b - a);
+
+   expect(actualPrices).toEqual(expectedPrices);
+});

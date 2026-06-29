@@ -14,13 +14,13 @@ export class ProductPage {
   }
 
   async getItemNames() {
-    
+
     return await this.itemNames.allTextContents();
   }
 
   async getItemPrices(){
-    return await this.itemPrices
+    const priceString = await this.itemPrices
       .allTextContents()
-      .map((price) => parseFloat(price.replace('$', "")));
+     return  priceString.map((price) => parseFloat(price.replace("$", "")));
   }
 }
