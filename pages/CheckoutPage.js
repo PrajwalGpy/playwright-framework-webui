@@ -13,8 +13,12 @@ export class CheckoutPage {
     this.toatalAmount = page.locator('[data-test="total-label"]');
   }
 
-  async autoFillInfo() {
+  async chekOut1(){
     await this.CheckOutBuuton.click();
+  }
+
+  async autoFillInfo() {
+    
     await this.UserNameInput.fill("Prajwal");
     await this.LastNameInput.fill("Poojary");
     await this.ZipCodeInput.fill("576001");

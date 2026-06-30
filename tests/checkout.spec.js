@@ -4,6 +4,7 @@ import { ProductPage } from "../pages/ProductPage";
 import { CartPage } from "../pages/CartPage";
 import { CheckoutPage } from "../pages/CheckoutPage";
 import { users } from "../test-data/users";
+import { channel } from "node:diagnostics_channel";
 
 let loginPage, productPage, cartPage, checkoutPage;
 
@@ -21,9 +22,9 @@ test.beforeEach(async ({ page }) => {
     );
 
     const ItemList = [
-        "Sauce Labs Backpack",
-        "Sauce Labs Bolt T-Shirt",
-        "Test.allTheThings() T-Shirt (Red)",
+        // "Sauce Labs Backpack",
+        // "Sauce Labs Bolt T-Shirt",
+        // "Test.allTheThings() T-Shirt (Red)",
     ];
 
     for (let items of ItemList) {
@@ -35,6 +36,8 @@ test.beforeEach(async ({ page }) => {
 
 
 test('Checkout Successfully', async({page})=>{
+    await checkoutPage.chekOut1();
+    await expect(page).toHaveURL(/checkout-step-one.html/);
 
     await checkoutPage.autoFillInfo();
 
@@ -46,7 +49,21 @@ test('Checkout Successfully', async({page})=>{
     await expect(CheckoutMessage).toBeVisible();
 })
 
-test('Checkout Empty Cart',async({page})=>{
+test.only('Checkout Empty Cart',async({page})=>{
+
+    const cartItems =await cartPage.getCartItemNames();
+    expect(cartItems.length).toBe(0);
+    await checkoutPage.chekOut1();
+    await expect(page).toHaveURL(/checkout-step-one.html/);
+
+    await checkoutPage.autoFillInfo();
+
+    await expect(page).toHaveURL(/checkout-step-two.html/);
+
+    await checkoutPage.chekOut();
+
+    const CheckoutMessage = page.locator('[data-test="complete-header"]');
+    await expect(CheckoutMessage).toBeVisible();
 
 })
 
