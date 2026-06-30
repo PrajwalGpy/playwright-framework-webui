@@ -20,7 +20,7 @@ test.beforeEach(async ({ page }) => {
 });
 
 test("Add Item", async ({ page }) => {
-    productPage.addItemToCart("Sauce Labs Backpack");
+    await productPage.addItemToCart("Sauce Labs Backpack");
     expect(await productPage.getCartBadgeCount()).toBe(1);
 });
 
@@ -40,4 +40,15 @@ test("Add Multiple Items", async ({ page }) => {
     await productPage.goToCart();
 
     expect(await cartPage.getCartItemNames()).toEqual(ItemList);
+});
+
+test("Remove Item", async ({ page }) => {
+  await productPage.addItemToCart("Sauce Labs Backpack");
+
+  expect(await productPage.getCartBadgeCount()).toBe(1);
+  await productPage.goToCart();
+  await cartPage.removeItems("Sauce Labs Backpack");
+  expect(await productPage.getCartBadgeCount()).toBe(0);
+
+
 });

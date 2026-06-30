@@ -40,6 +40,7 @@ export class ProductPage {
   }
 
   async getCartBadgeCount(){
+    await this.page.waitForLoadState("load");
     if( !(await this.cartBadge.isVisible())) return 0;
     return parseInt(await this.cartBadge.innerText());
 
