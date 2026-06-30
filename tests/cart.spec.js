@@ -13,6 +13,7 @@ test.beforeEach(async ({ page }) => {
   cartPage = new CartPage(page);
 
   await loginPage.navigate();
+  await page.waitForLoadState("networkidle");
   await loginPage.login(
     users.standardUser.username,
     users.standardUser.password,

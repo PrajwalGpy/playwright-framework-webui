@@ -14,7 +14,7 @@ test.beforeEach(async ({ page }) => {
     checkoutPage = new CheckoutPage(page);
 
     await loginPage.navigate();
-
+    await page.waitForLoadState("networkidle");
     await loginPage.login(
         users.standardUser.username,
         users.standardUser.password,
