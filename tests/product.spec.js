@@ -75,8 +75,10 @@ test('Open Product',async({page})=>{
     await expect(backToProducts).toBeVisible();
 })
 
-test('Verify Product Name',async({page})=>{
-    await productPage.choiceItem();
-    const productName =  page.locator('[data-test="inventory-item-name"]');
-    await expect(productName).toBeVisible();
-})
+test("Verify Product Name & Description", async ({ page }) => {
+  await productPage.choiceItem();
+  const itemName = page.locator('[data-test="inventory-item-name"]');
+  const itemDescription = page.locator('[data-test="inventory-item-desc"]');
+  await expect(itemName).toBeVisible();
+  await expect(itemDescription).toBeVisible();
+});
