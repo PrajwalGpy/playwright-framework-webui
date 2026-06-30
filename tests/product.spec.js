@@ -66,3 +66,17 @@ test("Verify Products Sort: Price High to Low", async ({ page }) => {
 
    expect(actualPrices).toEqual(expectedPrices);
 });
+
+test('Open Product',async({page})=>{
+    await productPage.choiceItem();
+    const backToProducts = page.getByRole("button", {
+      name: "Back to products",
+    });
+    await expect(backToProducts).toBeVisible();
+})
+
+test('Verify Product Name',async({page})=>{
+    await productPage.choiceItem();
+    const productName =  page.locator('[data-test="inventory-item-name"]');
+    await expect(productName).toBeVisible();
+})

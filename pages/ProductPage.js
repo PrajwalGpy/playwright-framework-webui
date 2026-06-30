@@ -6,6 +6,8 @@ export class ProductPage {
     this.sortDropdown = page.locator("select.product_sort_container");
     this.itemNames = page.locator('[data-test="inventory-item-name"]');
     this.itemPrices = page.locator('[data-test="inventory-item-price"]')
+    this.slectitem = page.getByRole("link", { name: "Sauce Labs Backpack" }).nth(1);
+
   }
 
   async product_sorter(sorter_type) {
@@ -22,5 +24,9 @@ export class ProductPage {
     const priceString = await this.itemPrices
       .allTextContents()
      return  priceString.map((price) => parseFloat(price.replace("$", "")));
+  }
+
+  async choiceItem(){
+    await this.slectitem.click();
   }
 }
