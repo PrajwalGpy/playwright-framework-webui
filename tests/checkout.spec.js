@@ -4,7 +4,6 @@ import { ProductPage } from "../pages/ProductPage";
 import { CartPage } from "../pages/CartPage";
 import { CheckoutPage } from "../pages/CheckoutPage";
 import { users } from "../test-data/users";
-import { channel } from "node:diagnostics_channel";
 
 let loginPage, productPage, cartPage, checkoutPage;
 
@@ -34,29 +33,11 @@ test.beforeEach(async ({ page }) => {
     await productPage.goToCart();
 });
 
-
-test('Checkout Successfully', async({page})=>{
+test("Checkout Successfully", async ({ page }) => {
     await checkoutPage.chekOut1();
     await expect(page).toHaveURL(/checkout-step-one.html/);
 
-    await checkoutPage.autoFillInfo();
-
-    await expect(page).toHaveURL(/checkout-step-two.html/)
-
-    await checkoutPage.chekOut();
-
-    const CheckoutMessage = page.locator('[data-test="complete-header"]')
-    await expect(CheckoutMessage).toBeVisible();
-})
-
-test.only('Checkout Empty Cart',async({page})=>{
-
-    const cartItems =await cartPage.getCartItemNames();
-    expect(cartItems.length).toBe(0);
-    await checkoutPage.chekOut1();
-    await expect(page).toHaveURL(/checkout-step-one.html/);
-
-    await checkoutPage.autoFillInfo();
+    await checkoutPage.autoFillInfo("prajwal", "poojary", "576001");
 
     await expect(page).toHaveURL(/checkout-step-two.html/);
 
@@ -64,7 +45,58 @@ test.only('Checkout Empty Cart',async({page})=>{
 
     const CheckoutMessage = page.locator('[data-test="complete-header"]');
     await expect(CheckoutMessage).toBeVisible();
+});
 
-})
+test.skip("Checkout Empty Cart", async ({ page }) => {
+    const cartItems = await cartPage.getCartItemNames();
+    expect(cartItems.length).toBe(0);
+    await checkoutPage.chekOut1();
+    await expect(page).toHaveURL(/checkout-step-one.html/);
 
+    await checkoutPage.autoFillInfo("prajwal", "poojary", "576001");
 
+    await expect(page).toHaveURL(/checkout-step-two.html/);
+
+    await checkoutPage.chekOut();
+
+    const CheckoutMessage = page.locator('[data-test="complete-header"]');
+    await expect(CheckoutMessage).toBeVisible();
+});
+
+test("Verify Error when First Name is Missing", async ({ page }) => {
+    await checkoutPage.chekOut1();
+    await checkoutPage.autoFillInfo("", "poojary", "576001");
+
+    await expect(checkoutPage.errorMessage).toBeVisible();
+    await expect(checkoutPage.errorMessage).toContainText(
+        "Error: First Name is required",
+    );
+});
+
+test("Verify Error when Postal Code is Missing", async ({ page }) => {
+    await checkoutPage.chekOut1();
+    await checkoutPage.autoFillInfo("Prajwal", "", "576001");
+
+    await expect(checkoutPage.errorMessage).toBeVisible();
+    await expect(checkoutPage.errorMessage).toContainText(
+        "Error: Last Name is required",
+    );
+});
+
+test("Verify Error when Last Name is Missing", async ({ page }) => {
+    await checkoutPage.chekOut1();
+    await checkoutPage.autoFillInfo("Prajwal", "poojary", "");
+
+    await expect(checkoutPage.errorMessage).toBeVisible();
+    await expect(checkoutPage.errorMessage).toContainText(
+        "Error: Postal Code is required",
+    );
+});
+
+test("Cancel Checkout should redirect back to Cart", async ({ page }) => {
+    await checkoutPage.chekOut1();
+    await checkoutPage.autoFillInfo("Prajwal", "poojary", "576001");
+
+    await checkoutPage.clickCancel();
+    await expect(page).toHaveURL(/inventory.html/)
+});

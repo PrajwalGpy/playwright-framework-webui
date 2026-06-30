@@ -11,22 +11,28 @@ export class CheckoutPage {
     this.subTotal = page.locator('[data-test="subtotal-label"]');
     this.taxTotal = page.locator('[data-test="tax-label"]');
     this.toatalAmount = page.locator('[data-test="total-label"]');
+    this.cancelButton = page.locator('[data-test="cancel"]');
+    this.errorMessage = page.locator('[data-test="error"]');
   }
 
   async chekOut1(){
     await this.CheckOutBuuton.click();
   }
 
-  async autoFillInfo() {
+  async autoFillInfo(firstname,lastname,zipcode) {
     
-    await this.UserNameInput.fill("Prajwal");
-    await this.LastNameInput.fill("Poojary");
-    await this.ZipCodeInput.fill("576001");
+    if (firstname) await this.UserNameInput.fill(firstname);
+    if (lastname) await this.LastNameInput.fill(lastname);
+    if (zipcode) await this.ZipCodeInput.fill(zipcode);
     await this.ChekoutContinueButton.click();
   }
 
   async chekOut() {
     await this.finshCheckOutButton.click();
+  }
+
+  async clickCancel(){
+    await this.cancelButton.click();
   }
 
   async getItemPrices() {
