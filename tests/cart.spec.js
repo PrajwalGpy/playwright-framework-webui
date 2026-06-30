@@ -1,36 +1,43 @@
 import { test, expect } from "@playwright/test";
 import { LoginPage } from "../pages/LoginPage";
 import { ProductPage } from "../pages/ProductPage";
+import { CartPage } from "../pages/CartPage";
 import { users } from "../test-data/users";
 
-let loginPage;
-let productPage;
+let loginPage, productPage, cartPage;
 
 test.beforeEach(async ({ page }) => {
-  loginPage = new LoginPage(page);
-  productPage = new ProductPage(page);
+    loginPage = new LoginPage(page);
+    productPage = new ProductPage(page);
+    cartPage = new CartPage(page);
 
-  await loginPage.navigate();
-  await loginPage.login(
-    users.standardUser.username,
-    users.standardUser.password,
-  );
-  await expect(page).toHaveURL(/inventory.html/);
+    await loginPage.navigate();
+    await loginPage.login(
+        users.standardUser.username,
+        users.standardUser.password,
+    );
+    await expect(page).toHaveURL(/inventory.html/);
 });
 
 test("Add Item", async ({ page }) => {
-  productPage.addItemToCart("Sauce Labs Backpack");
-  await page.waitForTimeout(3000)
-    expect( await productPage.getCartBadgeCount()).toBe(1);
+    productPage.addItemToCart("Sauce Labs Backpack");
+    expect(await productPage.getCartBadgeCount()).toBe(1);
 });
 
-test.skip("Add Multiple Items", async ({ page }) => {
-  await page.getByRole("button", { name: "Add to cart" }).nth(0).click();
-  await page.getByRole("button", { name: "Add to cart" }).nth(1).click();
-  await page.getByRole("button", { name: "Add to cart" }).nth(4).click();
+test("Add Multiple Items", async ({ page }) => {
+    const ItemList = [
+        "Sauce Labs Backpack",
+        "Sauce Labs Bolt T-Shirt",
+        "Test.allTheThings() T-Shirt (Red)",
+    ];
 
-  await page.locator('[data-test="shopping-cart-link"]').click();
-  await expect(
-    page.getByRole("link", { name: "Sauce Labs Backpack" }),
-  ).toBeVisible();
+    for (let items of ItemList) {
+        await productPage.addItemToCart(items);
+    }
+
+    await expect(ItemList.length).toEqual(await productPage.getCartBadgeCount());
+
+    await productPage.goToCart();
+
+    expect(await cartPage.getCartItemNames()).toEqual(ItemList);
 });

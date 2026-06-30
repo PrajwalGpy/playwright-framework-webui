@@ -1,7 +1,8 @@
 export class CartPage{
     constructor(page){
         this.page = page
-        this.cartItem = page.locater('[data-test="inventory-item-name"]');
+        this.cartItem = page.locator('[data-test="inventory-item-name"]');
+
     }
 
     async getCartItemNames(){
