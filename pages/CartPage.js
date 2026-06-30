@@ -1,4 +1,3 @@
-import { expect } from "playwright/test";
 
 export class CartPage{
     constructor(page){
@@ -19,4 +18,6 @@ export class CartPage{
         await itemName.getByRole("button", { name: "Remove" }).click();
 
     }
+
+    async 
 }
