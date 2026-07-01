@@ -9,7 +9,7 @@
     "test:headed": "playwright test --headed",
     "report": "playwright show-report",
     "clean:allure": "rimraf allure-results allure-report",
-  "test:allure": "npm run clean:allure && npx playwright test && npx allure serve allure-results"
+    "test:allure": "npm run clean:allure && npx playwright test && npx allure serve allure-results"
   },
   "keywords": [],
   "author": "",
@@ -24,5 +24,16 @@
   },
   "dependencies": {
     "playwright": "^1.61.1"
-  }
+  },
+  "directories": {
+    "test": "tests"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/PrajwalGpy/playwright-framework-webui.git"
+  },
+  "bugs": {
+    "url": "https://github.com/PrajwalGpy/playwright-framework-webui/issues"
+  },
+  "homepage": "https://github.com/PrajwalGpy/playwright-framework-webui#readme"
 }
