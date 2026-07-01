@@ -1,5 +1,5 @@
 # 1. Use the official Playwright image matching your Node version
-FROM mcr.microsoft.com/playwright:v1.49.0-noble
+FROM mcr.microsoft.com/playwright:v1.61.1-noble
 
 # 2. Set the working directory inside the container
 WORKDIR /app
